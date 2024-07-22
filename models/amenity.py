@@ -1,15 +1,12 @@
 #!/usr/bin/python3
 # models/amenity.py
+
 from models.base_model import BaseModel
 
 class Amenity(BaseModel):
-    """Represent an Amenity in the AirBnB system."""
-
-    def __init__(self, name="", *args, **kwargs):
-        """Initialize an Amenity instance."""
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.name = name
+        self.name = ""
 
     def __str__(self):
-        """Return a string representation of the Amenity instance."""
-        return f"[Amenity] ({self.id}) {self.__dict__}"
+        return f"[{self.__class__.__name__}] ({self.id}) {{'id': '{self.id}', 'created_at': {self.created_at}, 'updated_at': {self.updated_at}, 'name': '{self.name}'}}"
