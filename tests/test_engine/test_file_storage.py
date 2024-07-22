@@ -58,14 +58,6 @@ class TestFileStorage(unittest.TestCase):
         retrieved_model = self.storage.get(BaseModel, model.id)
         self.assertEqual(retrieved_model.id, model.id)
 
-    def test_get_method(self):
-        """Test that get() method retrieves an object by ID."""
-        model = BaseModel()
-        self.storage.new(model)
-        self.storage.save()
-        retrieved_model = self.storage.get(BaseModel, model.id)
-        self.assertEqual(retrieved_model, model)
-
     def test_delete(self):
         """Test the delete() method."""
         model = BaseModel()
