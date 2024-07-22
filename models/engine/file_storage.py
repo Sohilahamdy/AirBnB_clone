@@ -10,7 +10,7 @@ from models.review import Review
 
 class FileStorage:
     """Handles storage of objects using JSON format."""
-
+    
     __file_path = "file.json"
     __objects = {}
 
@@ -58,6 +58,20 @@ class FileStorage:
             pass
         except json.JSONDecodeError:
             print(f"Warning: {self.__file_path} is empty or corrupt.")
+
+    def get(self, cls, id):
+        """
+        Retrieves an object by class and ID.
+        Args:
+            cls (type): The class type of the object to retrieve.
+            id (str): The ID of the object to retrieve.
+        Returns:
+            BaseModel: The object with the specified class and ID, or None if not found.
+        """
+        if not issubclass(cls, BaseModel):
+            raise TypeError("cls must be a subclass of BaseModel")
+        key = f"{cls.__name__}.{id}"
+        return self.__objects.get(key)
 
     def __get_class(self, class_name):
         """
