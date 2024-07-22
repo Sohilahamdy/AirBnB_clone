@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
-from models.engine.file_storage import storage
+from models.engine import storage
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
