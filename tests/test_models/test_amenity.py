@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 import unittest
 from models.amenity import Amenity
 
@@ -21,6 +18,11 @@ class TestAmenity(unittest.TestCase):
 
     def test_amenity_name_is_string(self):
         self.assertIsInstance(self.amenity.name, str)
+
+    def test_amenity_instance(self):
+        """Test if Amenity instance is correctly created."""
+        amenity = Amenity()
+        self.assertIsInstance(amenity, Amenity)
 
     def test_amenity_to_dict_includes_amenity_attributes(self):
         amenity_dict = self.amenity.to_dict()
