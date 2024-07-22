@@ -117,27 +117,3 @@ class FileStorage:
             self.__objects[key] = obj
         else:
             raise KeyError(f"No such object: {key}"
-
-    def all(self, cls=None):
-        """Returns a dictionary of all objects or objects of a specific class."""
-        if cls is None:
-            return FileStorage.__objects
-        result = {}
-        for key, obj in FileStorage.__objects.items():
-            if isinstance(obj, cls):
-                result[key] = obj
-        return result
-
-    def new(self, obj):
-        """Adds a new object to storage."""
-        if obj:
-            key = f"{obj.__class__.__name__}.{obj.id}"
-            FileStorage.__objects[key] = obj
-
-    def save(self):
-        """Save all objects to file (for this example, we'll just pass)."""
-        pass
-
-    def reload(self):
-        """Reload objects from file (for this example, we'll just pass)."""
-        pass
