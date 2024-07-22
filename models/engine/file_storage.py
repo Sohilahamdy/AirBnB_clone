@@ -1,36 +1,39 @@
-##!/usr/bin/python3
+#!/usr/bin/python3
 # models/engine/file_storage.py
 
 import json
 from models.base_model import BaseModel
 
 class FileStorage:
+    """This class manages storage of hbnb models in JSON format"""
+
     __file_path = 'file.json'
     __objects = {}
 
     def all(self):
-        """Returns the dictionary __objects"""
-        return FileStorage.__objects
+        """Returns a dictionary of all objects"""
+        return self.__objects
 
     def new(self, obj):
-        """Adds obj to __objects dictionary"""
-        key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj
+        """Adds a new object to the storage"""
+        if obj:
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            self.__objects[key] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
+        """Saves the objects to a JSON file"""
+        with open(self.__file_path, 'w') as f:
+            obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+            json.dump(obj_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects"""
+        """Loads objects from a JSON file"""
         try:
-            with open(FileStorage.__file_path, 'r') as f:
-                objs = json.load(f)
-                for k, v in objs.items():
-                    cls_name = v['__class__']
-                    if cls_name == "BaseModel":
-                        obj = BaseModel(**v)
-                        FileStorage.__objects[k] = obj
+            with open(self.__file_path, 'r') as f:
+                obj_dict = json.load(f)
+                for key, value in obj_dict.items():
+                    cls_name = value['__class__']
+                    cls = BaseModel.__subclasses__()[0]  # Adjust based on your class hierarchy
+                    self.__objects[key] = cls(**value)
         except FileNotFoundError:
             pass
