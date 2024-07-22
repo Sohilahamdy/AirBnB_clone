@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 import unittest
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
@@ -67,4 +68,3 @@ class TestFileStorage(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
