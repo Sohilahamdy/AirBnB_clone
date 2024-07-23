@@ -2,6 +2,7 @@
 # models/engine/file_storage.py
 
 import json
+import os
 from models.base_model import BaseModel
 
 class FileStorage:
@@ -27,13 +28,11 @@ class FileStorage:
             json.dump(obj_dict, f)
 
     def reload(self):
-        """Loads objects from a JSON file"""
-        try:
+        """Deserializes the JSON file to __objects (if it exists)"""
+        if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as f:
-                obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    cls_name = value['__class__']
-                    cls = BaseModel.__subclasses__()[0]  # Adjust based on your class hierarchy
+                json_objects = json.load(f)
+                for key, value in json_objects.items():
+                    cls_name, obj_id = key.split('.')
+                    cls = globals()[cls_name]
                     self.__objects[key] = cls(**value)
-        except FileNotFoundError:
-            pass
