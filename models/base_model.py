@@ -26,8 +26,9 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
+        """Convert instance into a dictionary"""
         model_dict = self.__dict__.copy()
         model_dict["__class__"] = self.__class__.__name__
         model_dict["created_at"] = self.created_at.isoformat()
         model_dict["updated_at"] = self.updated_at.isoformat()
-        return model_dict
+        return dict_representation

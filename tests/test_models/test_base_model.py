@@ -37,6 +37,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict(self):
         """Test that to_dict method creates accurate dictionary."""
+        self.model.name = 'Test Model'
+        self.model.number = 42
         model_dict = self.model.to_dict()
         self.assertEqual(model_dict['__class__'], 'BaseModel')
         self.assertEqual(model_dict['name'], 'Test Model')
@@ -44,6 +46,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(model_dict['id'], self.model.id)
         self.assertIn("created_at", model_dict)
         self.assertIn("updated_at", model_dict)
+        self.assertIsInstance(model_dict["created_at"], str)
+        self.assertIsInstance(model_dict["updated_at"], str)
 
 if __name__ == '__main__':
     unittest.main()

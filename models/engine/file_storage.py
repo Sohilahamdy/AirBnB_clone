@@ -3,6 +3,7 @@
 
 import json
 import os
+from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -22,11 +23,11 @@ class FileStorage:
 
     def new(self, obj):
         """Adds a new object to the storage"""
-        self.__objects[obj.__class__.__name__ + "." + obj.id] = obj
+        key = obj.__class__.__name__ + "." + obj.id
+        self.__objects[key] = obj
 
     def save(self):
         """Saves the objects to a JSON file"""
-        from models.base_model import BaseModel
         obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
         with open(self.__file_path, 'w') as f:
             json.dump(obj_dict, f)
@@ -36,9 +37,14 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r') as f:
                 obj_dict = json.load(f)
+                print("Contents loaded from file:")
+                print(obj_dict)  # Add this line to print contents
                 for key, value in obj_dict.items():
                     class_name = value['__class__']
-                    from models.base_model import BaseModel
-                    self.__objects[key] = BaseModel(**value)
+                    cls = globals().get(class_name)
+                    if cls:
+                        self.__objects[key] = cls(**value)
+                    else:
+                        print(f"Class {class_name} not found.")
         except FileNotFoundError:
             pass
