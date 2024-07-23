@@ -3,7 +3,12 @@
 
 import json
 import os
-from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -17,22 +22,23 @@ class FileStorage:
 
     def new(self, obj):
         """Adds a new object to the storage"""
-        if obj:
-            key = f"{obj.__class__.__name__}.{obj.id}"
-            self.__objects[key] = obj
+        self.__objects[obj.__class__.__name__ + "." + obj.id] = obj
 
     def save(self):
         """Saves the objects to a JSON file"""
+        from models.base_model import BaseModel
+        obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
         with open(self.__file_path, 'w') as f:
-            obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
             json.dump(obj_dict, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects (if it exists)"""
-        if os.path.exists(self.__file_path):
+        try:
             with open(self.__file_path, 'r') as f:
-                json_objects = json.load(f)
-                for key, value in json_objects.items():
-                    cls_name, obj_id = key.split('.')
-                    cls = globals()[cls_name]
-                    self.__objects[key] = cls(**value)
+                obj_dict = json.load(f)
+                for key, value in obj_dict.items():
+                    class_name = value['__class__']
+                    from models.base_model import BaseModel
+                    self.__objects[key] = BaseModel(**value)
+        except FileNotFoundError:
+            pass

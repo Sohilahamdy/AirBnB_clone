@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 import unittest
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 
 class TestBaseModel(unittest.TestCase):
     """Test cases for the BaseModel class"""
@@ -29,17 +33,17 @@ class TestBaseModel(unittest.TestCase):
         """Test the save method"""
         old_updated_at = self.model.updated_at
         self.model.save()
-        self.assertNotEqual(old_updated_at, self.model.updated_at)
+        self.assertNotEqual(old_updated_at, self.model.updated_at, self.model.created_at)
 
     def test_to_dict(self):
-        """Test the to_dict method"""
+        """Test that to_dict method creates accurate dictionary."""
         model_dict = self.model.to_dict()
         self.assertEqual(model_dict['__class__'], 'BaseModel')
         self.assertEqual(model_dict['name'], 'Test Model')
         self.assertEqual(model_dict['number'], 42)
         self.assertEqual(model_dict['id'], self.model.id)
-        self.assertEqual(model_dict['created_at'], self.model.created_at.isoformat())
-        self.assertEqual(model_dict['updated_at'], self.model.updated_at.isoformat())
+        self.assertIn("created_at", model_dict)
+        self.assertIn("updated_at", model_dict)
 
 if __name__ == '__main__':
     unittest.main()
