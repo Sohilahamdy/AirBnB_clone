@@ -62,6 +62,7 @@ class TestFileStorage(unittest.TestCase):
         self.storage.reload()
         all_objs = self.storage.all()
         self.assertEqual(len(all_objs), 2)
+        self.assertEqual(len(self.storage._FileStorage__objects), 2)
 
     def test_save_reload_new_instance(self):
         """Test saving and reloading with new instances"""
@@ -84,6 +85,7 @@ class TestFileStorage(unittest.TestCase):
         """Test that __objects internal state is properly managed"""
         self.assertTrue(hasattr(self.storage, '_FileStorage__objects'))
         self.assertEqual(type(self.storage._FileStorage__objects), dict)
+        self.assertGreater(len(self.storage._FileStorage__objects), 0)
 
     def print_all_objs(self, message=""):
         """Print all objects in storage with an optional message"""
