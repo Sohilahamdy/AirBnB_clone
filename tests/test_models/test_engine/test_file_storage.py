@@ -51,8 +51,13 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """Test that save properly saves objects to the file"""
         model2 = BaseModel()
+        self.storage.new(self.model)
         self.storage.new(model2)
         self.storage.save()
+        self.assertTrue(os.path.exists(self.file_path))
+        with open(self.file_path, 'r') as f:
+            data = f.read()
+        self.assertGreater(len(data), 0)
         self.storage._FileStorage__objects = {}  # Clear storage
         self.storage.reload()
         all_objs = self.storage.all()
@@ -74,6 +79,11 @@ class TestFileStorage(unittest.TestCase):
         """Test that __objects is properly updated"""
         key = f"{self.model.__class__.__name__}.{self.model.id}"
         self.assertIn(key, self.storage.all())
+
+    def test_objects_internal(self):
+        """Test that __objects internal state is properly managed"""
+        self.assertTrue(hasattr(self.storage, '_FileStorage__objects'))
+        self.assertEqual(type(self.storage._FileStorage__objects), dict)
 
     def print_all_objs(self, message=""):
         """Print all objects in storage with an optional message"""
