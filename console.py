@@ -16,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_help(self, line):
         """Display help information for commands"""
-        cmd.Cmd.do_help(self, line)
+        super().do_help(line)
 
     def emptyline(self):
         """Override empty line handling"""
