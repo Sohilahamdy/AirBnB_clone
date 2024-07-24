@@ -23,6 +23,7 @@ class TestFileStorage(unittest.TestCase):
         self.storage._FileStorage__objects = {}
         self.model = BaseModel()
         self.storage.new(self.model)
+        self.storage.save()
 
     def tearDown(self):
         """Teardown for each test"""
@@ -35,6 +36,7 @@ class TestFileStorage(unittest.TestCase):
         """Test that new adds an object to storage"""
         new_model = BaseModel()
         self.storage.new(new_model)
+        self.storage.save()
         all_objs = self.storage.all()
         self.assertEqual(len(all_objs), 2)
 
@@ -49,7 +51,6 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """Test that save properly saves objects to the file"""
         model2 = BaseModel()
-        self.storage.new(self.model)
         self.storage.new(model2)
         self.storage.save()
         self.storage._FileStorage__objects = {}  # Clear storage

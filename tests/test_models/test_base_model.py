@@ -33,7 +33,7 @@ class TestBaseModel(unittest.TestCase):
         """Test the save method"""
         old_updated_at = self.model.updated_at
         self.model.save()
-        self.assertNotEqual(old_updated_at, self.model.updated_at, self.model.created_at)
+        self.assertNotEqual(old_updated_at, self.model.updated_at)
 
     def test_to_dict(self):
         """Test that to_dict method creates accurate dictionary."""
