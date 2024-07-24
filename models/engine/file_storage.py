@@ -19,7 +19,7 @@ class FileStorage:
 
     def all(self):
         """Returns a dictionary of all objects"""
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds a new object to the storage"""
@@ -38,15 +38,15 @@ class FileStorage:
     def reload(self):
         """Deserializes the JSON file to __objects (if it exists)"""
         try:
-                with open(self.__file_path, 'r') as f:
-                    obj_dict = json.load(f)
-                    self.__objects = {}
-                    for key, value in obj_dict.items():
-                        class_name = value['__class__']
-                        cls = globals().get(class_name)
-                        if cls:
-                            self.__objects[key] = cls(**value)
-                        else:
-                            print(f"Class {class_name} not found.")
+            with open(self.__file_path, 'r') as f:
+                obj_dict = json.load(f)
+                self.__objects = {}
+                for key, value in obj_dict.items():
+                    class_name = value['__class__']
+                    cls = globals().get(class_name)
+                    if cls:
+                        self.__objects[key] = cls(**value)
+                    else:
+                        print(f"Class {class_name} not found.")
         except FileNotFoundError:
             pass
