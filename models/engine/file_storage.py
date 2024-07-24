@@ -2,7 +2,6 @@
 # models/engine/file_storage.py
 
 import json
-import os
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -19,7 +18,7 @@ class FileStorage:
 
     def all(self):
         """Returns a dictionary of all objects"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Adds a new object to the storage"""
