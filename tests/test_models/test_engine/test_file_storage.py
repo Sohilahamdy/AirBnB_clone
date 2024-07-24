@@ -8,9 +8,7 @@ from models.base_model import BaseModel
 class TestFileStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.storage = FileStorage()
         cls.file_path = 'file.json'
-        cls.storage._FileStorage__file_path = cls.file_path
 
     @classmethod
     def tearDownClass(cls):
@@ -21,41 +19,31 @@ class TestFileStorage(unittest.TestCase):
 
     def setUp(self):
         self.storage = FileStorage()
+        self.storage._FileStorage__file_path = self.file_path
         self.storage._FileStorage__objects = {}
         self.model = BaseModel()
         self.storage.new(self.model)
 
+    def tearDown(self):
+        """Teardown for each test"""
+        try:
+            os.remove(self.file_path)
+        except FileNotFoundError:
+            pass
 
     def test_new(self):
         """Test that new adds an object to storage"""
         new_model = BaseModel()
         self.storage.new(new_model)
-        self.storage.save()
-        
-        self.print_all_objs("Contents of storage after adding new model in test_new:")
-        
         all_objs = self.storage.all()
-        self.assertEqual(len(all_objs), 1)
+        self.assertEqual(len(all_objs), 2)
 
     def test_reload(self):
         """Test that reload properly loads objects from the file"""
-        self.storage.new(self.model)
         self.storage.save()
-        
-        with open(self.file_path, 'r') as file:
-            file_contents = file.read()
-            print("Contents of file before reload:")
-            print(file_contents)
-        
         self.storage._FileStorage__objects = {}  # Clear storage
         self.storage.reload()
         all_objs = self.storage.all()
-
-        with open(self.file_path, 'r') as file:
-            file_contents = file.read()
-            print("Contents of file after reload:")
-            print(file_contents)
-
         self.assertEqual(len(all_objs), 1)
 
     def test_save(self):
@@ -64,15 +52,8 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(self.model)
         self.storage.new(model2)
         self.storage.save()
-        
-        with open(self.file_path, 'r') as file:
-            file_contents = file.read()
-            print("Contents of file after save:")
-            print(file_contents)
-        
         self.storage._FileStorage__objects = {}  # Clear storage
         self.storage.reload()
-        
         all_objs = self.storage.all()
         self.assertEqual(len(all_objs), 2)
 
@@ -83,17 +64,10 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(obj1)
         self.storage.new(obj2)
         self.storage.save()
-        
-        self.print_all_objs("Contents of storage after save in test_save_reload_new_instance:")
-        
         self.storage._FileStorage__objects = {}  # Clear storage
         self.storage.reload()
-        
         all_objs = self.storage.all()
-        
-        self.print_all_objs("Contents of storage after reload in test_save_reload_new_instance:")
-        
-        self.assertEqual(len(all_objs), 2)
+        self.assertEqual(len(all_objs), 3)
 
     def test_objects(self):
         """Test that __objects is properly updated"""

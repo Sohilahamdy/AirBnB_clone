@@ -28,9 +28,12 @@ class FileStorage:
 
     def save(self):
         """Saves the objects to a JSON file"""
-        obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
-        with open(self.__file_path, 'w') as f:
-            json.dump(obj_dict, f)
+        try:
+            obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+            with open(self.__file_path, 'w') as f:
+                json.dump(obj_dict, f)
+        except IOError as e:
+            print(f"An error occurred while saving to {self.__file_path}: {e}")
 
     def reload(self):
         """Deserializes the JSON file to __objects (if it exists)"""
