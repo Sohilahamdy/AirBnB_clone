@@ -38,8 +38,8 @@ class TestAmenity(unittest.TestCase):
         """Test the __str__ method of Amenity"""
         string_rep = str(self.amenity)
         self.assertIn("[Amenity]", string_rep)
-        self.assertIn(f"({self.amenity.id})", string_rep)
-        self.assertIn(f"name: Pool", string_rep)
+        self.assertIn("({})".format(self.amenity.id), string_rep)
+        self.assertIn("name: Pool", string_rep)
 
 if __name__ == '__main__':
     unittest.main()

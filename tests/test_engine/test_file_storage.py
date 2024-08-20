@@ -80,7 +80,7 @@ class TestFileStorage(unittest.TestCase):
 
     def test_objects(self):
         """Test that __objects is properly updated"""
-        key = f"{self.model.__class__.__name__}.{self.model.id}"
+        key = "{}.{}".format(self.model.__class__.__name__, self.model.id)
         self.assertIn(key, self.storage.all())
 
     def test_objects_internal(self):
@@ -95,7 +95,7 @@ class TestFileStorage(unittest.TestCase):
         """Print all objects in storage with an optional message"""
         print(message)
         for key, obj in self.storage.all().items():
-            print(f"{key}: {obj.to_dict()}")
+            print("{}: {}".format(key, obj.to_dict()))
 
 if __name__ == "__main__":
     unittest.main()
