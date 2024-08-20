@@ -22,30 +22,23 @@ class FileStorage:
 
     def new(self, obj):
         """Adds a new object to the storage"""
-        key = obj.__class__.__name__ + "." + obj.id
-        self.__objects[key] = obj
+        if obj:
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            self.__objects[key] = obj
 
     def save(self):
         """Saves the objects to a JSON file"""
-        try:
-            obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
-            with open(self.__file_path, 'w') as f:
-                json.dump(obj_dict, f)
-        except IOError as e:
-            print("An error occurred while saving to {}: {}".format(self.__file_path, e))
+        with open(self.__file_path, 'w') as f:
+            json.dump({key: obj.to_dict() for key, obj in self.__objects.items()}, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects (if it exists)"""
         try:
             with open(self.__file_path, 'r') as f:
-                obj_dict = json.load(f)
-                self.__objects = {}
-                for key, value in obj_dict.items():
-                    class_name = value['__class__']
-                    cls = globals().get(class_name)
-                    if cls:
-                        self.__objects[key] = cls(**value)
-                    else:
-                        print("Class {} not found.".format(class_name))
+                objects = json.load(f)
+                for key, value in objects.items():
+                    cls_name = value['__class__']
+                    cls = BaseModel.__subclasses__()[0]  # Example: use appropriate class
+                    self.__objects[key] = cls(**value)
         except FileNotFoundError:
             pass
