@@ -2,14 +2,21 @@
 
 import uuid
 from datetime import datetime
-from dateutil.parser import parse as parse_date
+
+try:
+    from dateutil.parser import parse as parse_date
+except ImportError:
+    parse_date = None
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    value = parse_date(value)
+                    if parse_date:
+                        value = parse_date(value)
+                    else:
+                        value = datetime.fromisoformat(value)
                 if key != "__class__":
                     setattr(self, key, value)
         else:
