@@ -34,10 +34,10 @@ class FileStorage:
         """Deserializes the JSON file to __objects (if it exists)"""
         try:
             with open(self.__file_path, 'r') as f:
-                objects = json.load(f)
-                for key, value in objects.items():
+                obj_dict = json.load(f)
+                for key, value in obj_dict.items():
                     cls_name = value['__class__']
-                    cls = BaseModel.__subclasses__()[0]
-                    self.__objects[key] = cls(**value)
+                    if cls_name == 'BaseModel':
+                        self.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
             pass
