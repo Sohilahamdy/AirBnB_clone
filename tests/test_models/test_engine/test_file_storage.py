@@ -90,6 +90,11 @@ class TestFileStorage(unittest.TestCase):
         self.assertGreater(len(self.storage._FileStorage__objects), 0)
         self.assertEqual(len(all_objs), 1)
 
+    def print_all_objs(self, message=""):
+        """Print all objects in storage with an optional message"""
+        print(message)
+        for key, obj in self.storage.all().items():
+            print(f"{key}: {obj.to_dict()}")
 
 if __name__ == "__main__":
     unittest.main()
