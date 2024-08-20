@@ -37,7 +37,7 @@ class FileStorage:
                 obj_dict = json.load(f)
                 for key, value in obj_dict.items():
                     cls_name = value['__class__']
-                    if cls_name == 'BaseModel':
-                        self.__objects[key] = BaseModel(**value)
+                    cls = globals()[cls_name]
+                    self.__objects[key] = cls(**value)
         except FileNotFoundError:
             pass
