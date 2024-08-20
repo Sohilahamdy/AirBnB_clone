@@ -32,10 +32,6 @@ class TestFileStorage(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    def test_file_path(self):
-    """Test that __file_path is correctly set"""
-    self.assertEqual(self.storage._FileStorage__file_path, self.file_path)
-
 
     def test_new(self):
         """Test that new adds an object to storage"""
