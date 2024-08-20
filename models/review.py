@@ -20,7 +20,7 @@ class Review(BaseModel):
 
     def __str__(self):
         """Return a string representation of the Review instance."""
-        return f"[Review] ({self.id}) {self.__dict__}"
+        return "[Review] ({}) {}".format(self.id, self.__dict__)
 
     @property
     def place(self):

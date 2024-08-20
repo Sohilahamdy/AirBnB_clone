@@ -32,7 +32,7 @@ class FileStorage:
             with open(self.__file_path, 'w') as f:
                 json.dump(obj_dict, f)
         except IOError as e:
-            print(f"An error occurred while saving to {self.__file_path}: {e}")
+            print("An error occurred while saving to {}: {}".format(self.__file_path, e))
 
     def reload(self):
         """Deserializes the JSON file to __objects (if it exists)"""
@@ -46,6 +46,6 @@ class FileStorage:
                     if cls:
                         self.__objects[key] = cls(**value)
                     else:
-                        print(f"Class {class_name} not found.")
+                        print("Class {} not found.".format(class_name))
         except FileNotFoundError:
             pass

@@ -16,7 +16,7 @@ class State(BaseModel):
 
     def __str__(self):
         """Return a string representation of the State instance."""
-        return f"[State] ({self.id}) {self.__dict__}"
+        return "[State] ({}) {}".format(self.id, self.__dict__)
 
     def get_cities(self):
         """Return a list of City instances in this State.

@@ -9,4 +9,4 @@ class Amenity(BaseModel):
     name = ""
 
     def __str__(self):
-        return f"[{self.__class__.__name__}] ({self.id}) name: {self.name}"
+        return "[{}] ({}) name: {}".format(self.__class__.__name__, self.id, self.name)

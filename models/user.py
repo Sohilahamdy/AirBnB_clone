@@ -22,8 +22,8 @@ class User(BaseModel):
 
     def __str__(self):
         """Return a string representation of the User instance."""
-        return f"[User] ({self.id}) {self.__dict__}"
+        return "[User] ({}) {}".format(self.id, self.__dict__)
 
     def full_name(self):
         """Return the full name of the user."""
-        return f"{self.first_name} {self.last_name}"
+        return "{} {}".format(self.first_name, self.last_name)
