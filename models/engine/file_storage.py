@@ -38,7 +38,7 @@ class FileStorage:
                 objects = json.load(f)
                 for key, value in objects.items():
                     cls_name = value['__class__']
-                    cls = BaseModel.__subclasses__()[0]  # Example: use appropriate class
+                    cls = BaseModel.__subclasses__()[0]
                     self.__objects[key] = cls(**value)
         except FileNotFoundError:
             pass
