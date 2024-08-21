@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# models/engine/file_storage.py
 
 import json
 from models.base_model import BaseModel
@@ -10,34 +9,39 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+class FileStorage():
 
     __file_path = 'file.json'
     __objects = {}
 
     def all(self):
-        """Returns a dictionary of all objects"""
-        return self.__objects
+
+        return FileStorage.__objects
 
     def new(self, obj):
-        """Adds a new object to the storage"""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+
+        if obj:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            FileStorage.__object[key] = obj
 
     def save(self):
-        """Saves the objects to a JSON file"""
-        with open(self.__file_path, 'w') as f:
-            json.dump({key: obj.to_dict() for key, obj in self.__objects.items()}, f)
+
+        new_dict = {}
+        for key, value in FileStorage.__object.items():
+            new_dict[key] = value.to_dict().copy()
+        with open(FileStorage.__file_path, mode='w') as my_file:
+            json.dump(new_dict, my-file)
 
     def reload(self):
-        """Deserializes the JSON file to __objects (if it exists)"""
+
         try:
-            with open(self.__file_path, 'r') as f:
-                obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    cls_name = value['__class__']
-                    cls = globals()[cls_name]
-                    self.__objects[key] = cls(**value)
+            with open(FileStorage.__file_path, mode='r') as my_file:
+                new_sict = json.load(my_file)
+
+            for key, value in new_dict.items():
+                class_name = value.get('__class__')
+                obj = eval(class_name + '(**value)')
+                FileStorage.__object[key] = obj
+
         except FileNotFoundError:
             pass

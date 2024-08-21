@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# models/amenity.py
 
 from models.base_model import BaseModel
 
@@ -8,5 +7,5 @@ class Amenity(BaseModel):
 
     name = ""
 
-    def __str__(self):
-        return "[{}] ({}) name: {}".format(self.__class__.__name__, self.id, self.name)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
