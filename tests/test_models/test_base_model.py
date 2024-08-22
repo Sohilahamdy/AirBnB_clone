@@ -9,7 +9,7 @@ from time import sleep
 from models.base_model import BaseModel
 
 
-class TestBaseModel(uittest.TestCase):
+class TestBaseModel(unittest.TestCase):
 
     def testd_Ddoc_module(self):
 
@@ -54,15 +54,15 @@ class TestBaseModel(uittest.TestCase):
         my_model_json = my_model.to_dict()
         for key, value in model_types_json.items():
             with self.subTest(key=key, value=value):
-                self.assertIn(key, my_moddel_json)
-                self.assertIs(type(my_moddel_json[key]), value)
+                self.assertIn(key, my_model_json)
+                self.assertIs(type(my_model_json[key]), value)
 
     def test_base_types(self):
 
         second_model = BaseModel()
         self.assertIs(type(second_model), BaseModel)
-        my_model.name = "My Second Model"
-        my_model.my_number = 80
+        second_model.name = "Andres"
+        second_model.my_number = 80
         self.assertEqual(second_model.name, "My Second Model")
         self.assertEqual(second_model.my_number, 80)
         model_types = {

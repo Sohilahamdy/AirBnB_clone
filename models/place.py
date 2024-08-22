@@ -18,5 +18,5 @@ class Place(BaseModel):
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
-
+        """Initialize a Place instance."""
         super().__init__(*args, **kwargs)

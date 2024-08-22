@@ -41,7 +41,7 @@ class TestAmenity(unittest.TestCase):
             self.assertTrue(issubclass(Amenity, BaseModel))
 
         with self.subTest(msg='Attributes'):
-            self.assertIsInstance(Amenity, name, str)
+            self.assertIsInstance(Amenity.name, str)
 
 
 if __name__ == '__main__':

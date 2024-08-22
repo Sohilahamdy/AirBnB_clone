@@ -5,7 +5,7 @@ import console
 from console import HBNBCommand
 
 
-class TestConsole(unittest.testcase):
+class TestConsole(unittest.TestCase):
 
     def create(self):
 
@@ -14,9 +14,9 @@ class TestConsole(unittest.testcase):
     def test_quit(self):
 
         con = self.create()
-        self.assertTrue(con.inecmd("quit"))
+        self.assertTrue(con.onecmd("quit"))
 
     def test_EOF(self):
 
         con = self.create()
-        self.assertTrue(con.inecmd("EOF"))
+        self.assertTrue(con.onecmd("EOF"))

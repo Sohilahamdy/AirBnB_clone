@@ -20,7 +20,7 @@ class FileStorage():
         return FileStorage.__objects
 
     def new(self, obj):
-
+        """Adds a new object to storage."""
         if obj:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             FileStorage.__objects[key] = obj

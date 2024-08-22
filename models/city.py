@@ -9,5 +9,5 @@ class City(BaseModel):
     name = ""
 
     def __init__(self, *args, **kwargs):
-
+        """Initialize a City instance."""
         super().__init__(*args, **kwargs)
