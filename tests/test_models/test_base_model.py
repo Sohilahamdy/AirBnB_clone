@@ -12,8 +12,9 @@ from models.base_model import BaseModel
 class TestBaseModel(unittest.TestCase):
 
     def test_doc_module(self):
-
+        """Test if docstring is present in BaseModel."""
         doc = BaseModel.__doc__
+        self.assertIsNotNone(doc)
         self.assertGreater(len(doc), 1)
 
     def test_pep8_conformance_base_model(self):
@@ -31,7 +32,7 @@ class TestBaseModel(unittest.TestCase):
                          "Found code style errors (and warnings).")
 
     def test_doc_constructor(self):
-
+        """Test if docstring is present in BaseModel.__init__."""
         doc = BaseModel.__init__.__doc__
         self.assertGreater(len(doc), 1)
 
