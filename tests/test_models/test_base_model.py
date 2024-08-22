@@ -11,7 +11,7 @@ from models.base_model import BaseModel
 
 class TestBaseModel(unittest.TestCase):
 
-    def testd_Ddoc_module(self):
+    def test_doc_module(self):
 
         doc = BaseModel.__doc__
         self.assertGreater(len(doc), 1)
@@ -30,7 +30,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(res.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def test_doc_constrctor(self):
+    def test_doc_constructor(self):
 
         doc = BaseModel.__init__.__doc__
         self.assertGreater(len(doc), 1)
@@ -46,7 +46,7 @@ class TestBaseModel(unittest.TestCase):
         model_types_json = {
             "my_number": int,
             "name": str,
-            "__calss__": str,
+            "__class__": str,
             "updated_at": str,
             "id": str,
             "created_at": str
@@ -61,7 +61,7 @@ class TestBaseModel(unittest.TestCase):
 
         second_model = BaseModel()
         self.assertIs(type(second_model), BaseModel)
-        second_model.name = "Andres"
+        second_model.name = "My Second Model"
         second_model.my_number = 80
         self.assertEqual(second_model.name, "My Second Model")
         self.assertEqual(second_model.my_number, 80)
@@ -74,8 +74,8 @@ class TestBaseModel(unittest.TestCase):
         }
         for key, value in model_types.items():
             with self.subTest(key=key, value=value):
-                self.assertIn(key, second_moddel.__dict__)
-                self.assertIs(type(second_moddel.__dict__[key]), value)
+                self.assertIn(key, second_model.__dict__)
+                self.assertIs(type(second_model.__dict__[key]), value)
 
     def test_uuid(self):
 
