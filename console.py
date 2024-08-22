@@ -92,15 +92,21 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Update an instance based on the class name and id by adding or updating an attribute"""
         args = line.split(' ', 3)
-        if len(args) < 4:
-            if len(args) < 1:
-                print("** class name missing **")
-            elif len(args) < 2:
-                print("** instance id missing **")
-            elif len(args) < 3:
-                print("** attribute name missing **")
-            elif len(args) < 4:
-                print("** value missing **")
+
+        if len(args) < 1 or args[0] == "":
+            print("** class name missing **")
+            return
+    
+        if len(args) < 2 or args[1] == "":
+            print("** instance id missing **")
+            return
+
+        if len(args) < 3 or args[2] == "":
+            print("** attribute name missing **")
+            return
+    
+        if len(args) < 4 or args[3] == "":
+            print("** value missing **")
             return
         class_name, instance_id, attribute_name, attribute_value = args[0], args[1], args[2], args[3].strip('"')
         if class_name not in globals() or not issubclass(globals()[class_name], BaseModel):
