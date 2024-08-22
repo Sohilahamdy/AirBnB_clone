@@ -38,7 +38,7 @@ class TestAmenity(unittest.TestCase):
     def test_class(self):
 
         with self.subTest(msg='Inheritance'):
-            self.assertTrue(issubclass(Amenity, BadeModel))
+            self.assertTrue(issubclass(Amenity, BaseModel))
 
         with self.subTest(msg='Attributes'):
             self.assertIsInstance(Amenity, name, str)

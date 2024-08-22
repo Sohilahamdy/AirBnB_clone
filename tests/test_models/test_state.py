@@ -5,7 +5,7 @@ import json
 import pep8
 import datetime
 
-from models.state import state
+from models.state import State
 from models.base_model import BaseModel
 
 

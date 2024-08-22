@@ -16,7 +16,7 @@ class FileStorage():
     __objects = {}
 
     def all(self):
-
+        """Returns a dictionary of all objects in storage."""
         return FileStorage.__objects
 
     def new(self, obj):

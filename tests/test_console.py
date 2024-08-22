@@ -5,7 +5,7 @@ import console
 from console import HBNBCommand
 
 
-class test_console(unittest.testcase):
+class TestConsole(unittest.testcase):
 
     def create(self):
 

@@ -5,7 +5,7 @@ import json
 import pep8
 import datetime
 
-from models.user import user
+from models.user import User
 from models.base_model import BaseModel
 
 

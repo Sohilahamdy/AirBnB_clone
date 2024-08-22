@@ -89,6 +89,7 @@ class TestFileStorage(unittest.TestCase):
             self.assertTrue(len(f.read()) > 0)
 
     def test_docstrings(self):
+        """Check if docstrings are present in methods"""
         self.assertTrue(FileStorage.all.__doc__)
         self.assertTrue(hasattr(FileStorage, 'all'))
         self.assertTrue(FileStorage.new.__doc__)

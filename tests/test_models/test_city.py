@@ -38,7 +38,7 @@ class TestCity(unittest.TestCase):
     def test_class(self):
 
         with self.subTest(msg='Inheritance'):
-            self.assertTrue(issubclass(City.name, str))
+            self.assertTrue(issubclass(City, BaseModel))
 
         with self.subTest(msg='Attributes'):
             self.assertIsInstance(City.name, str)
