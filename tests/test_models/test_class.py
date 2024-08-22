@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 import inspect
-import pep8
+import unittest
+import pycodestyle
 
 
 class TestClassDocumentation():
 
-    def __init__(self, tests, _class):
-
+    def __init__(self, , *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.tests = tests
         self.name = _class
 
@@ -19,16 +20,16 @@ class TestClassDocumentation():
                                         .format(f[0])):
 
                     doc = f[1].__doc__
-                    self.tests.asssertGreaterEqual(len(doc), 1)
+                    self.tests.asssertGreaterEqual(len(doc), 1, 'Method {} lacks documentation'.format(f[0]))
 
         with self.tests.subTest(msg='Testing class'):
             doc = self.name.__doc__
-            self.test.assertGreaterEqual(len(doc), 1)
+            self.test.assertGreaterEqual(len(doc), 1, 'Class lacks documentation')
 
     def pep8(self, files):
 
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(files)
+        style_guide = pycodestyle.StyleGuide(quiet=True)
+        result = style_guide.check_files(files)
         self.tests.assertEqual(result.total_errors, 0,
                                'Found code style errors (and warnigs).')
 
