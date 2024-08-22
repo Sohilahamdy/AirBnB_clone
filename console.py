@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 import cmd
-
+from models.base_model import BaseModel
+from models import storage
+import uuid
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter for the AirBnB project.
     This class handles the command line interface for managing
-    AirBnB objects. It supports commands like quit, EOF, and help.
+    AirBnB objects. It supports commands like quit, EOF, help, create, show, destroy, all, and update.
     """
 
     prompt = '(hbnb) '
@@ -21,19 +23,16 @@ class HBNBCommand(cmd.Cmd):
     def do_help(self, line):
         """Display help information about commands."""
         if line:
-            # Display help for a specific command
             if hasattr(self, 'do_' + line):
                 func = getattr(self, 'do_' + line)
                 print(self._get_help(func))
             else:
                 print("*** No help on {}".format(line))
         else:
-            # Display the default help information
             super().do_help(line)
 
     def emptyline(self):
-        """Override the emptyline method to do nothing
-           on an empty input line."""
+        """Override the emptyline method to do nothing on an empty input line."""
         pass
 
     def _get_help(self, func):
@@ -41,6 +40,126 @@ class HBNBCommand(cmd.Cmd):
         doc = func.__doc__
         return doc if doc else "No help available."
 
+    def do_create(self, line):
+        """Create a new instance of BaseModel, save it (to the JSON file) and print the id.
+        Usage: create <class name>
+        """
+        if not line:
+            print("** class name missing **")
+            return
+        try:
+            cls = eval(line)
+            if not issubclass(cls, BaseModel):
+                print("** class doesn't exist **")
+                return
+            instance = cls()
+            instance.save()
+            print(instance.id)
+        except Exception as e:
+            print("** class doesn't exist **")
+
+    def do_show(self, line):
+        """Print the string representation of an instance based on the class name and id.
+        Usage: show <class name> <id>
+        """
+        args = line.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        try:
+            cls = eval(args[0])
+            if not issubclass(cls, BaseModel):
+                print("** class doesn't exist **")
+                return
+            if len(args) == 1:
+                print("** instance id missing **")
+                return
+            instance_id = args[1]
+            key = f"{args[0]}.{instance_id}"
+            instance = storage.all().get(key)
+            if instance is None:
+                print("** no instance found **")
+            else:
+                print(instance)
+        except Exception as e:
+            print("** class doesn't exist **")
+
+    def do_destroy(self, line):
+        """Delete an instance based on the class name and id.
+        Usage: destroy <class name> <id>
+        """
+        args = line.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        try:
+            cls = eval(args[0])
+            if not issubclass(cls, BaseModel):
+                print("** class doesn't exist **")
+                return
+            if len(args) == 1:
+                print("** instance id missing **")
+                return
+            instance_id = args[1]
+            key = f"{args[0]}.{instance_id}"
+            if key in storage.all():
+                del storage.all()[key]
+                storage.save()
+            else:
+                print("** no instance found **")
+        except Exception as e:
+            print("** class doesn't exist **")
+
+    def do_all(self, line):
+        """Print all string representation of all instances, or all instances of a specific class.
+        Usage: all [class name]
+        """
+        if line:
+            try:
+                cls = eval(line)
+                if not issubclass(cls, BaseModel):
+                    print("** class doesn't exist **")
+                    return
+                instances = [str(obj) for key, obj in storage.all().items() if isinstance(obj, cls)]
+            except Exception as e:
+                print("** class doesn't exist **")
+                return
+        else:
+            instances = [str(obj) for obj in storage.all().values()]
+        print(instances)
+
+    def do_update(self, line):
+        """Update an instance based on the class name and id by adding or updating an attribute.
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        args = line.split(' ', 3)
+        if len(args) < 3:
+            print("** class name missing **" if len(args) < 1 else "** instance id missing **" if len(args) < 2 else "** attribute name missing **")
+            return
+        try:
+            cls = eval(args[0])
+            if not issubclass(cls, BaseModel):
+                print("** class doesn't exist **")
+                return
+            instance_id = args[1]
+            key = f"{args[0]}.{instance_id}"
+            instance = storage.all().get(key)
+            if instance is None:
+                print("** no instance found **")
+                return
+            if len(args) < 4:
+                print("** value missing **")
+                return
+            attr_name = args[2]
+            attr_value = args[3].strip('"')
+            if hasattr(instance, attr_name):
+                attr_type = type(getattr(instance, attr_name))
+                setattr(instance, attr_name, attr_type(attr_value))
+                instance.save()
+            else:
+                print("** attribute name missing **")
+        except Exception as e:
+            print("** class doesn't exist **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
