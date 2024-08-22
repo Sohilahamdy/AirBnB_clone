@@ -26,9 +26,9 @@ class TestFileStorage(unittest.TestCase):
 
     def setUp(self):
 
-        self.b1 = BaswModel()
+        self.b1 = BaseModel()
         self.a1 = Amenity()
-        self.ci = City()
+        self.c1 = City()
         self.p1 = Place()
         self.r1 = Review()
         self.s1 = State()
@@ -42,7 +42,7 @@ class TestFileStorage(unittest.TestCase):
 
     def teardown(self):
 
-        del self.bi
+        del self.b1
         del self.a1
         del self.c1
         del self.p1
@@ -66,7 +66,7 @@ class TestFileStorage(unittest.TestCase):
 
     def test_storage_all_type(self):
 
-        self.assertEqual(dict, type(self.storage.all())
+        self.assertEqual(dict, type(self.storage.all()))
 
     def test_new(self):
         obj = self.storage.all()
@@ -81,22 +81,20 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json") as f:
             dic = json.load(f)
 
-            self.assertEqual(ininstance(dic, dict), True)
+            self.assertEqual(isinstance(dic, dict), True)
 
     def test_file_existence(self):
-
 
         with open("file.json") as f:
             self.assertTrue(len(f.read()) > 0)
 
     def test_docstrings(self):
-
         self.assertTrue(FileStorage.all.__doc__)
         self.assertTrue(hasattr(FileStorage, 'all'))
         self.assertTrue(FileStorage.new.__doc__)
         self.assertTrue(hasattr(FileStorage, 'new'))
         self.assertTrue(FileStorage.save.__doc__)
-        self.assertTrue(hasattr(FileStorage,'save'))
+        self.assertTrue(hasattr(FileStorage, 'save'))
         self.assertTrue(FileStorage.reload.__doc__)
         self.assertTrue(hasattr(FileStorage, 'reload'))
 

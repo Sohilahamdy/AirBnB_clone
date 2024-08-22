@@ -6,11 +6,10 @@ import pep8
 import datetime
 from time import sleep
 
-from models.based_model import BaseModel
+from models.base_model import BaseModel
 
 
 class TestBaseModel(uittest.TestCase):
-
 
     def testd_Ddoc_module(self):
 
@@ -104,12 +103,12 @@ class TestBaseModel(uittest.TestCase):
 
     def test_constructor_kwargs(self):
 
-        obj  = BaseModel()
+        obj = BaseModel()
         obj.name = "My First Model"
         obj.my_number = 89
         json_attributes = obj.to_dict()
 
-        obj2  = BaseModel(**json_attributes)
+        obj2 = BaseModel(**json_attributes)
 
         self.assertIsInstance(obj2, BaseModel)
         self.assertIsInstance(json_attributes, dict)

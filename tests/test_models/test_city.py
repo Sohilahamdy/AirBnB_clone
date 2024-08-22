@@ -5,8 +5,8 @@ import json
 import pep8
 import datetime
 
-from models.city import city
-from models.case_model import BaseModel
+from models.city import City
+from models.base_model import BaseModel
 
 
 class TestCity(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestCity(unittest.TestCase):
     def test_class(self):
 
         with self.subTest(msg='Inheritance'):
-            self.assertTrue(issubclass(City.name, str)
+            self.assertTrue(issubclass(City.name, str))
 
         with self.subTest(msg='Attributes'):
             self.assertIsInstance(City.name, str)

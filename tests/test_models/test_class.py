@@ -32,5 +32,6 @@ class TestClassDocumentation():
         self.tests.assertEqual(result.total_errors, 0,
                                'Found code style errors (and warnigs).')
 
+
 if __name__ == '__main__':
     unittest.main()
