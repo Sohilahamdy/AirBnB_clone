@@ -39,22 +39,13 @@ class FileStorage():
     def reload(self):
         """Reloads the stored objects from the file"""
         try:
-            with open(self.__file_path, 'r') as file:
+            with open(FileStorage.__file_path, 'r') as file:
                 data = json.load(file)
                 for key, obj_dict in data.items():
-                    cls_name = obj_dict.get('__class__')
-                    if cls_name:
-                        cls = globals().get(cls_name)
-                        if cls:
-                            obj = cls(**obj_dict)
-                            self.__objects[key] = obj
-                        else:
-                            print(f"** class '{cls_name}' not found **")
-                    else:
-                        print("** no '__class__' key found **")
+                    cls_name = obj_dict['__class__']
+                    cls = globals()[cls_name]
+                    obj = cls(**obj_dict)
+                    FileStorage.__objects[key] = obj
+
         except FileNotFoundError:
-            print("** file not found **")
-        except JSONDecodeError:
-            print("** error decoding JSON **")
-        except Exception as e:
-            print(f"** unexpected error: {e} **")
+            pass
