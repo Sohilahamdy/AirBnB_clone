@@ -38,9 +38,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """Show the string representation of an instance"""
-        print("Received line: {}".format(line))
         args = line.split()
-        print("Parsed args: {}".format(args))
         if len(args) < 2:
             if len(args) < 1:
                 print("** class name missing **")
@@ -54,7 +52,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)
-        print("Looking for key: {}".format(key))
         instance = storage.all().get(key)
         if instance is None:
             print("** no instance found **")
@@ -106,9 +103,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Update an instance based on the class name and
          id by adding or updating an attribute"""
-        print("Received line: {}".format(line))
         args = line.split(' ', 3)
-        print("Parsed args: {}".format(args))
 
         if len(args) < 1 or args[0] == "":
             print("** class name missing **")
@@ -125,9 +120,8 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 4 or args[3] == "":
             print("** value missing **")
             return
-        (
-            class_name, instance_id, attribute_name, attribute_value
-        ) = (
+
+        class_name, instance_id, attribute_name, attribute_value = (
             args[0], args[1], args[2], args[3].strip('"')
         )
         if class_name not in globals() or not issubclass(
