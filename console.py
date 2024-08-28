@@ -46,15 +46,14 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
             return
-        class_name = line.split()[0]
-        if class_name not in globals():
+        class_name = line.strip()
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
-        cls = globals()[class_name]
-        obj = cls()
-        obj.save()
-        print(obj.id)
+        cls = HBNBCommand.classes[class_name]
+        instance = cls()
+        instance.save()
+        print(instance.id)
 
     def do_show(self, line):
         """Show the string representation of an instance"""
@@ -97,20 +96,20 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_all(self, line):
-        """Displays all objects of a specific type"""
-        if not line:
-            print("** class name missing **")
-            return
-        
-        class_name = line.split()[0]
-        if class_name not in globals():
+        """Show all instances or instances of a specific class"""
+        args = line.split()
+        if len(args) > 1:
             print("** class doesn't exist **")
             return
-        
-        cls = globals()[class_name]
-        objects = storage.all(cls)
-        for obj in objects.values():
-            print(obj)
+        if len(args) == 0:
+            instances = storage.all().values()
+        else:
+            class_name = args[0]
+            if class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            instances = [str(instance) for key, instance in storage.all().items() if key.startswith(class_name)]
+        print([str(instance) for instance in instances])
 
     def do_update(self, line):
         """Update an instance based on the class name and
