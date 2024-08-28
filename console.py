@@ -97,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Show all instances or instances of a specific class"""
-                args = line.split()
+        args = line.split()
         if len(args) > 1:
             print("** class doesn't exist **")
             return
