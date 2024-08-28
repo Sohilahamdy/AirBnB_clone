@@ -141,8 +141,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, line):
         """Print the count all class instances"""
-        kclass = globals().get(line, None)
-        if kclass is None:
+        args = line.split()
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         count = 0
