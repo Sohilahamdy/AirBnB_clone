@@ -20,8 +20,6 @@ class FileStorage():
 
     def all(self):
         """Returns a dictionary of all objects in storage."""
-        if cls:
-            return {k: v for k, v in FileStorage.__objects.items() if isinstance(v, cls)}
         return FileStorage.__objects
 
     def new(self, obj):
