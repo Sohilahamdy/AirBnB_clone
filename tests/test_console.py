@@ -71,13 +71,17 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertEqual(output, "** no instance found **")
 
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
-    def test_all(self, mock_stdout):
+    def test_do_all(self, mock_stdout):
         """Test the 'all' command"""
-        self.console.onecmd("create BaseModel")
-        self.console.onecmd("all BaseModel")
-        # Check if the output contains the instance information
-        output = mock_stdout.write.call_args[0][0].strip()
-        self.assertIn("BaseModel", output)
+        con = self.create()
+        con.onecmd("create User")
+        con.onecmd("create Place")
+        con.onecmd("all")
+    
+        # Check that the output contains the instances
+        output = mock_stdout.write.call_args[0][0]
+        self.assertIn("User", output)
+        self.assertIn("Place", output)
 
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
     def test_update(self, mock_stdout):
