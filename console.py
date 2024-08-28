@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         cls = HBNBCommand.classes[class_name]
-        count = sum(1 for instance in storage.all().values() if isinstance(instance, cls))
+        count = cls.count()
         print(count)
     
     def emptyline(self):
