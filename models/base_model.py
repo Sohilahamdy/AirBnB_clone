@@ -44,4 +44,5 @@ class BaseModel:
         
     def all(cls):
         """Returns a list of all instances of a class."""
-        return {k: v for k, v in storage.all(cls).items()}
+        all_objs = storage.all(cls)
+        return list(all_objs.values())
