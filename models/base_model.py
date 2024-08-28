@@ -6,6 +6,7 @@ import models
 
 
 class BaseModel:
+    """A base class for all models"""
 
     def __init__(self, *args, **kwargs):
         """Description of the OtherModel class."""

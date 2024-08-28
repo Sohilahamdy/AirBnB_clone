@@ -11,6 +11,7 @@ from models.review import Review
 
 
 class FileStorage():
+    """Reloads the stored objects from the file"""
 
     __file_path = 'file.json'
     __objects = {}
@@ -26,7 +27,7 @@ class FileStorage():
             FileStorage.__objects[key] = obj
 
     def save(self):
-
+        """Save method documentation"""
         new_dict = {}
         for key, value in FileStorage.__objects.items():
             new_dict[key] = value.to_dict().copy()
@@ -34,7 +35,7 @@ class FileStorage():
             json.dump(new_dict, my_file)
 
     def reload(self):
-
+        """Reloads the stored objects from the file"""
         try:
             with open(FileStorage.__file_path, mode='r') as my_file:
                 new_dict = json.load(my_file)
