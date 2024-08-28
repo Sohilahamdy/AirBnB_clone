@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+"""
+This module contains the HBNBCommand class, which serves as the
+command interpreter for the AirBnB clone project.
+It allows users to interact with the application via commands like
+'create', 'show', 'destroy', 'all', and 'update'.
+"""
 
 import cmd
 from models.base_model import BaseModel
