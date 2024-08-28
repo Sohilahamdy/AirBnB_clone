@@ -98,10 +98,11 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Show all instances or instances of a specific class"""
         args = line.split()
+        print("Arguments:", args)  # Debug print
         if len(args) > 1:
             print("** class doesn't exist **")
             return
-        
+
         if len(args) == 0:
             # Show all instances
             instances = storage.all().values()
@@ -112,9 +113,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             instances = [str(instance) for key, instance in storage.all().items() if key.startswith(class_name + ".")]
-        
+
         # Print the instances
-        print([str(instance) for instance in instances])
+        print("Instances:", [str(instance) for instance in instances])
 
     def do_update(self, line):
         """Update an instance based on the class name and
