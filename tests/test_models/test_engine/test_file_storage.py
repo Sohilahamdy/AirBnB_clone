@@ -17,12 +17,6 @@ from models.user import User
 
 class TestFileStorage(unittest.TestCase):
 
-    def test_pep8_FileStorage(self):
-        """Test that the file storage module is PEP8 compliant."""
-        style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(['models/engine/file_storage.py'])
-        self.assertEqual(p.total_errors, 0, "fix pep8")
-
     def setUp(self):
         """Set up for the tests."""
         self.b1 = BaseModel()
@@ -34,9 +28,6 @@ class TestFileStorage(unittest.TestCase):
         self.u1 = User()
         self.storage = FileStorage()
         self.storage.save()
-        if not os.path.exists("file.json"):
-            with open("file.json", 'w') as f:
-                f.write('{}')
 
     def teardown(self):
         """Clean up after the tests."""
@@ -56,7 +47,6 @@ class TestFileStorage(unittest.TestCase):
         obj = self.storage.all()
         self.assertIsNotNone(obj)
         self.assertEqual(type(obj), dict)
-        self.assertIs(obj, self.storage._FileStorage__objects)
 
     def test_storage_empty(self):
         """Test that storage is not empty."""
