@@ -149,6 +149,11 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         instance.save()
 
+    def emptyline(self):
+        """Override the emptyline method to do nothing on empty input"""
+        pass
+
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
