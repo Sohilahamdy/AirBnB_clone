@@ -31,7 +31,7 @@ class BaseModel:
     def save(self):
         """Update the 'updated_at' attribute with the current time and save
         the instance to storage."""
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.datetime.now()
         models.storage.save()
 
     def to_dict(self):
@@ -44,5 +44,4 @@ class BaseModel:
         
     def all(cls):
         """Returns a list of all instances of a class."""
-        all_objs = storage.all(cls)
-        return list(all_objs.values())
+        return {k: v for k, v in storage.all(cls).items()}
