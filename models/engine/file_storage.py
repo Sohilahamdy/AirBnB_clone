@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import json
+import os
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -37,6 +38,10 @@ class FileStorage():
 
     def reload(self):
         """Reloads the stored objects from the file"""
+        if not os.path.exists(FileStorage.__file_path):
+            with open(FileStorage.__file_path, 'w') as file:
+                file.write('{}')  # Create an empty JSON file
+
         try:
             with open(FileStorage.__file_path, mode='r') as my_file:
                 new_dict = json.load(my_file)

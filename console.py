@@ -9,6 +9,11 @@ It allows users to interact with the application via commands like
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -16,6 +21,16 @@ class HBNBCommand(cmd.Cmd):
     """Command interpreter class for the AirBnB clone"""
 
     prompt = "(hbnb) "
+
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
+    }
 
     def do_quit(self, line):
         """Quit command to exit the program"""
@@ -32,21 +47,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = line.strip()
-        if class_name not in globals() or not issubclass(
-                                                    globals()[class_name],
-                                                    BaseModel):
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        cls = globals()[class_name]
+        cls = HBNBCommand.classes[class_name]
         instance = cls()
         instance.save()
         print(instance.id)
 
     def do_show(self, line):
         """Show the string representation of an instance"""
-        print("Received line: {}".format(line))
         args = line.split()
-        print("Parsed args: {}".format(args))
         if len(args) < 2:
             if len(args) < 1:
                 print("** class name missing **")
@@ -54,13 +65,10 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
             return
         class_name, instance_id = args[0], args[1]
-        if class_name not in globals() or not issubclass(
-                                                    globals()[class_name],
-                                                    BaseModel):
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)
-        print("Looking for key: {}".format(key))
         instance = storage.all().get(key)
         if instance is None:
             print("** no instance found **")
@@ -77,9 +85,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
             return
         class_name, instance_id = args[0], args[1]
-        if class_name not in globals() or not issubclass(
-                                                    globals()[class_name],
-                                                    BaseModel):
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)
@@ -99,49 +105,33 @@ class HBNBCommand(cmd.Cmd):
             instances = storage.all().values()
         else:
             class_name = args[0]
-            if class_name not in globals() or not issubclass(
-                                                        globals()[class_name],
-                                                        BaseModel):
+            if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            instances = [str(instance) for key, instance
-                         in storage.all().items()
-                         if key.startswith(class_name)]
+            instances = [str(instance) for key, instance in storage.all().items() if key.startswith(class_name)]
         print([str(instance) for instance in instances])
 
     def do_update(self, line):
         """Update an instance based on the class name and
          id by adding or updating an attribute"""
-        print("Received line: {}".format(line))
         args = line.split(' ', 3)
-        print("Parsed args: {}".format(args))
-
-        if len(args) < 1 or args[0] == "":
+        if len(args) < 1:
             print("** class name missing **")
             return
-
-        if len(args) < 2 or args[1] == "":
+        if len(args) < 2:
             print("** instance id missing **")
             return
-
-        if len(args) < 3 or args[2] == "":
+        if len(args) < 3:
             print("** attribute name missing **")
             return
-
-        if len(args) < 4 or args[3] == "":
+        if len(args) < 4:
             print("** value missing **")
             return
-
-        class_name, instance_id, attribute_name, attribute_value = (
-            args[0], args[1], args[2], args[3].strip('"')
-        )
-        if class_name not in globals() or not issubclass(
-                                                        globals()[class_name],
-                                                        BaseModel):
+        class_name, instance_id, attribute_name, attribute_value = args[0], args[1], args[2], args[3].strip('"')
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)
-        print("Looking for key: {}".format(key))
         instance = storage.all().get(key)
         if instance is None:
             print("** no instance found **")
@@ -150,9 +140,8 @@ class HBNBCommand(cmd.Cmd):
         instance.save()
 
     def emptyline(self):
-        """Override the emptyline method to do nothing on empty input"""
+        """Do nothing on empty input line"""
         pass
-
 
 
 if __name__ == '__main__':
