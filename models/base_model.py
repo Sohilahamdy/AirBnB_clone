@@ -46,3 +46,8 @@ class BaseModel:
         """Returns a list of all instances of a class."""
         all_objs = storage.all(cls)
         return list(all_objs.values())
+
+    def count(cls):
+        """Returns the number of instances of the class"""
+        all_instances = models.storage.all(cls)
+        return len(all_instances)
