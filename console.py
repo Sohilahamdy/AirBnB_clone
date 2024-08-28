@@ -140,14 +140,24 @@ class HBNBCommand(cmd.Cmd):
         instance.save()
 
     def do_count(self, line):
-        """Print the count all class instances"""
-        args = line.split()
+        """Print the count of all class instances"""
+        if '.' in line:
+            parts = line.split('.')
+            class_name = parts[0]
+            method_name = parts[1]
+            if method_name != "count()":
+                print("*** Unknown syntax:", line)
+                return
+        else:
+            class_name = line.strip()
+
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
         count = 0
         for obj in storage.all().values():
-            if obj.__class__.__name__ == line:
+            if obj.__class__.__name__ == class_name:
                 count += 1
         print(count)
     
