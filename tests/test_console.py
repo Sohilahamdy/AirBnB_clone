@@ -97,5 +97,14 @@ class TestHBNBCommand(unittest.TestCase):
         output = mock_stdout.write.call_args[0][0].strip()
         self.assertIn("new_name", output)
 
+    @mock.patch('sys.stdout', new_callable=mock.MagicMock)
+    def test_count(self, mock_stdout):
+        """Test the 'count' command"""
+        self.console.onecmd("create User")
+        self.console.onecmd("create User")
+        self.console.onecmd("count User")
+        output = mock_stdout.write.call_args[0][0].strip()
+        self.assertEqual(output, "2")
+
 if __name__ == '__main__':
     unittest.main()
