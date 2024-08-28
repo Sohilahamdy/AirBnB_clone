@@ -26,7 +26,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = line.strip()
-        if class_name not in globals() or not issubclass(globals()[class_name], BaseModel):
+        if class_name not in globals() or not issubclass(
+                                                    globals()[class_name],
+                                                    BaseModel):
             print("** class doesn't exist **")
             return
         cls = globals()[class_name]
@@ -46,7 +48,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
             return
         class_name, instance_id = args[0], args[1]
-        if class_name not in globals() or not issubclass(globals()[class_name], BaseModel):
+        if class_name not in globals() or not issubclass(
+                                                    globals()[class_name],
+                                                    BaseModel):
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)
@@ -67,7 +71,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
             return
         class_name, instance_id = args[0], args[1]
-        if class_name not in globals() or not issubclass(globals()[class_name], BaseModel):
+        if class_name not in globals() or not issubclass(
+                                                    globals()[class_name],
+                                                    BaseModel):
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)
@@ -87,23 +93,27 @@ class HBNBCommand(cmd.Cmd):
             instances = storage.all().values()
         else:
             class_name = args[0]
-            if class_name not in globals() or not issubclass(globals()[class_name], BaseModel):
+            if class_name not in globals() or not issubclass(
+                                                        globals()[class_name],
+                                                        BaseModel):
                 print("** class doesn't exist **")
                 return
-            instances = [str(instance) for key, instance in storage.all().items() if key.startswith(class_name)]
+            instances = [str(instance) for key, instance
+                         in storage.all().items()
+                         if key.startswith(class_name)]
         print([str(instance) for instance in instances])
 
     def do_update(self, line):
-        """Update an instance based on the class name and id by adding or updating an attribute"""
+        """Update an instance based on the class name and
+         id by adding or updating an attribute"""
         print("Received line: {}".format(line))
         args = line.split(' ', 3)
         print("Parsed args: {}".format(args))
 
-
         if len(args) < 1 or args[0] == "":
             print("** class name missing **")
             return
-    
+
         if len(args) < 2 or args[1] == "":
             print("** instance id missing **")
             return
@@ -111,12 +121,15 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 3 or args[2] == "":
             print("** attribute name missing **")
             return
-    
+
         if len(args) < 4 or args[3] == "":
             print("** value missing **")
             return
-        class_name, instance_id, attribute_name, attribute_value = args[0], args[1], args[2], args[3].strip('"')
-        if class_name not in globals() or not issubclass(globals()[class_name], BaseModel):
+        class_name, instance_id, attribute_name, attribute_value =
+        args[0], args[1], args[2], args[3].strip('"')
+        if class_name not in globals() or not issubclass(
+                                                        globals()[class_name],
+                                                        BaseModel):
             print("** class doesn't exist **")
             return
         key = "{}.{}".format(class_name, instance_id)

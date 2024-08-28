@@ -20,11 +20,14 @@ class TestClassDocumentation():
                                         .format(f[0])):
 
                     doc = f[1].__doc__
-                    self.tests.asssertGreaterEqual(len(doc), 1, 'Method {} lacks documentation'.format(f[0]))
+                    self.tests.asssertGreaterEqual(
+                        len(doc), 1,
+                        'Method {} lacks documentation'.format(f[0]))
 
         with self.tests.subTest(msg='Testing class'):
             doc = self.name.__doc__
-            self.test.assertGreaterEqual(len(doc), 1, 'Class lacks documentation')
+            self.test.assertGreaterEqual(len(doc), 1,
+                                         'Class lacks documentation')
 
     def pep8(self, files):
 
