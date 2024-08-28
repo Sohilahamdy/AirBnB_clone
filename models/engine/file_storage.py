@@ -20,10 +20,7 @@ class FileStorage():
 
     def all(self):
         """Returns a dictionary of all objects in storage."""
-        if cls is None:
-            return self.__objects
-        class_name = cls.__name__
-        return {k: v for k, v in self.__objects.items() if k.startswith(class_name)}
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds a new object to storage."""
@@ -38,14 +35,20 @@ class FileStorage():
 
     def reload(self):
         """Reloads the stored objects from the file"""
+        if not os.path.exists(FileStorage.__file_path):
+            with open(FileStorage.__file_path, 'w') as file:
+                file.write('{}')  # Create an empty JSON file
+
         try:
-            with open(FileStorage.__file_path, 'r') as file:
-                data = json.load(file)
-                for key, obj_dict in data.items():
-                    cls_name = obj_dict['__class__']
-                    cls = globals()[cls_name]
-                    obj = cls(**obj_dict)
-                    FileStorage.__objects[key] = obj
+            with open(FileStorage.__file_path, 'r') as my_file:
+                new_dict = json.load(my_file)
+
+            for key, value in new_dict.items():
+                class_name = value.get('__class__')
+                obj = eval(class_name + '(**value)')
+                FileStorage.__objects[key] = obj
 
         except FileNotFoundError:
+            pass
+        except JSONDecodeError:
             pass
