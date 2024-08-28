@@ -31,7 +31,8 @@ class FileStorage():
     def save(self):
         """Save method documentation"""
         with open(FileStorage.__file_path, 'w') as file:
-            json.dump({key: obj.to_dict() for key, obj in FileStorage.__objects.items()}, file)
+            json.dump({key: obj.to_dict() for key,
+                      obj in FileStorage.__objects.items()}, file)
 
     def reload(self):
         """Reloads the stored objects from the file"""

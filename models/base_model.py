@@ -26,11 +26,11 @@ class BaseModel:
 
     def __str__(self):
         """Return a string representation of the instance."""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
-        """Update the 'updated_at' attribute with the current time and save
-        the instance to storage."""
+        """Update the 'updated_at' attribute with the current time and """
         self.updated_at = datetime.now()
         models.storage.save()
 
@@ -41,7 +41,7 @@ class BaseModel:
         new_dict['created_at'] = self.__dict__['created_at'].isoformat()
         new_dict['updated_at'] = self.__dict__['updated_at'].isoformat()
         return (new_dict)
-        
+
     def all(cls):
         """Returns a list of all instances of a class."""
         all_objs = storage.all(cls)

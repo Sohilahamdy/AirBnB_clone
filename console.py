@@ -108,7 +108,9 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            instances = [str(instance) for key, instance in storage.all().items() if key.startswith(class_name)]
+            instances = [str(instance) for key,
+                         instance in storage.all().items()
+                         if key.startswith(class_name)]
         print([str(instance) for instance in instances])
 
     def do_update(self, line):
@@ -127,7 +129,9 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 4:
             print("** value missing **")
             return
-        class_name, instance_id, attribute_name, attribute_value = args[0], args[1], args[2], args[3].strip('"')
+        class_name, instance_id, attribute_name, attribute_value
+        = (
+           args[0], args[1], args[2], args[3].strip('"'))
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -160,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
             if obj.__class__.__name__ == class_name:
                 count += 1
         print(count)
-    
+
     def emptyline(self):
         """Do nothing on empty input line"""
         pass

@@ -11,6 +11,7 @@ from console import HBNBCommand
 from models.base_model import BaseModel
 from models import storage
 
+
 class TestHBNBCommand(unittest.TestCase):
     """
     This class contains unit tests for the HBNBCommand class.
@@ -41,7 +42,7 @@ class TestHBNBCommand(unittest.TestCase):
         # Extract the ID from the printed output
         output = mock_stdout.write.call_args[0][0].strip()
         self.assertTrue(output)  # Ensure output is not empty
-        self.assertTrue(any(c.isdigit() for c in output))  # Ensure output contains digits (ID)
+        self.assertTrue(any(c.isdigit() for c in output))
 
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
     def test_show(self, mock_stdout):
@@ -77,7 +78,7 @@ class TestHBNBCommand(unittest.TestCase):
         con.onecmd("create User")
         con.onecmd("create Place")
         con.onecmd("all")
-    
+
         # Check that the output contains the instances
         output = mock_stdout.write.call_args[0][0]
         self.assertIn("User", output)
@@ -91,7 +92,8 @@ class TestHBNBCommand(unittest.TestCase):
         # Get the ID of the created instance
         instance_id = mock_stdout.write.call_args[0][0].strip()
         # Test the 'update' command
-        self.console.onecmd(f"update BaseModel {instance_id} name \"new_name\"")
+        self.console.onecmd(f"update BaseModel {instance_id} name
+                            "\"new_name\"")
         # Check if the instance is correctly updated
         self.console.onecmd(f"show BaseModel {instance_id}")
         output = mock_stdout.write.call_args[0][0].strip()
@@ -105,6 +107,7 @@ class TestHBNBCommand(unittest.TestCase):
         self.console.onecmd("count User")
         output = mock_stdout.write.call_args[0][0].strip()
         self.assertEqual(output, "2")
+
 
 if __name__ == '__main__':
     unittest.main()
