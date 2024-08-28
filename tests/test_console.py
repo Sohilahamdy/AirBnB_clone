@@ -11,12 +11,18 @@ class TestConsole(unittest.TestCase):
 
         return HBNBCommand()
 
-    def test_quit(self):
+    @mock.patch('sys.stdout', new_callable=mock.MagicMock)
+    def test_quit(self, mock_stdout):
 
         con = self.create()
+        result = con.onecmd("quit")
         self.assertTrue(con.onecmd("quit"))
+        self.assertEqual(mock_stdout.getvalue(), '')
 
-    def test_EOF(self):
+    @mock.patch('sys.stdout', new_callable=mock.MagicMock)
+    def test_EOF(self, mock_stdout):
 
         con = self.create()
+        result = con.onecmd("EOF")
         self.assertTrue(con.onecmd("EOF"))
+        self.assertEqual(mock_stdout.getvalue(), '')

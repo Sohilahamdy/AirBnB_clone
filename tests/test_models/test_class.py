@@ -6,7 +6,7 @@ import pycodestyle
 
 class TestClassDocumentation():
 
-    def __init__(self, , *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.tests = tests
         self.name = _class

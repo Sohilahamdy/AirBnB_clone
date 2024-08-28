@@ -125,8 +125,11 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 4 or args[3] == "":
             print("** value missing **")
             return
-        class_name, instance_id, attribute_name, attribute_value =
-        args[0], args[1], args[2], args[3].strip('"')
+        (
+            class_name, instance_id, attribute_name, attribute_value
+        ) = (
+            args[0], args[1], args[2], args[3].strip('"')
+        )
         if class_name not in globals() or not issubclass(
                                                         globals()[class_name],
                                                         BaseModel):
