@@ -2,9 +2,7 @@
 
 import unittest
 import os
-import contextlib
 import json
-import models
 import pep8
 
 from models.engine.file_storage import FileStorage
@@ -20,12 +18,13 @@ from models.user import User
 class TestFileStorage(unittest.TestCase):
 
     def test_pep8_FileStorage(self):
+        """Test that the file storage module is PEP8 compliant."""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def setUp(self):
-
+        """Set up for the tests."""
         self.b1 = BaseModel()
         self.a1 = Amenity()
         self.c1 = City()
@@ -40,7 +39,9 @@ class TestFileStorage(unittest.TestCase):
                 f.write('{}')
 
     def teardown(self):
-
+        """Clean up after the tests."""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
         del self.b1
         del self.a1
         del self.c1
@@ -49,25 +50,24 @@ class TestFileStorage(unittest.TestCase):
         del self.s1
         del self.u1
         del self.storage
-        if os.path.exists("file.json"):
-            os.remove("file.json")
 
     def test_all(self):
-
+        """Test the all() method of the FileStorage class."""
         obj = self.storage.all()
         self.assertIsNotNone(obj)
         self.assertEqual(type(obj), dict)
         self.assertIs(obj, self.storage._FileStorage__objects)
 
     def test_storage_empty(self):
-
+        """Test that storage is not empty."""
         self.assertIsNotNone(self.storage.all())
 
     def test_storage_all_type(self):
-
+        """Test that all() returns a dictionary."""
         self.assertEqual(dict, type(self.storage.all()))
 
     def test_new(self):
+        """Test the new() method of the FileStorage class."""
         obj = self.storage.all()
         self.u1.id = 1234
         self.u1.name = "julien"
@@ -76,14 +76,13 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNotNone(obj[key])
 
     def test_check_json_loading(self):
-
+        """Test that JSON file loads correctly."""
         with open("file.json") as f:
             dic = json.load(f)
-
             self.assertEqual(isinstance(dic, dict), True)
 
     def test_file_existence(self):
-
+        """Test that the JSON file is created and not empty."""
         with open("file.json") as f:
             self.assertTrue(len(f.read()) > 0)
 

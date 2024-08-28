@@ -8,6 +8,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from json.decoder import JSONDecodeError
 
 
 class FileStorage():
@@ -46,4 +47,6 @@ class FileStorage():
                 FileStorage.__objects[key] = obj
 
         except FileNotFoundError:
+            pass
+        except JSONDecodeError:
             pass
