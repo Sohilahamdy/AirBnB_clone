@@ -45,7 +45,9 @@ class FileStorage():
 
             for key, value in new_dict.items():
                 class_name = value.get('__class__')
-                obj = eval(class_name + '(**value)')
+                if class_name in globals():
+                    cls = globals()[class_name]
+                    obj = cls(**value)
                 FileStorage.__objects[key] = obj
 
         except FileNotFoundError:
