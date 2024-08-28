@@ -42,3 +42,8 @@ class BaseModel:
         new_dict['created_at'] = self.__dict__['created_at'].isoformat()
         new_dict['updated_at'] = self.__dict__['updated_at'].isoformat()
         return (new_dict)
+        
+    def all(cls):
+        """Returns a list of all instances of a class."""
+        all_objs = storage.all(cls)
+        return list(all_objs.values())
