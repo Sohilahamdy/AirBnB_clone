@@ -11,14 +11,6 @@ from models.base_model import BaseModel
 
 class TestCity(unittest.TestCase):
 
-    """City class that inherits from BaseModel."""
-    name = ""
-    state_id = ""
-
-    def __init__(self, *args, **kwargs):
-        """Initialize a new City instance."""
-        super().__init__(*args, **kwargs)
-
     def test_doc_module(self):
 
         doc = City.__doc__
