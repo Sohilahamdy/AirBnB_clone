@@ -9,7 +9,7 @@ class BaseModel:
     """A base class for all models"""
 
     def __init__(self, *args, **kwargs):
-        """Description of the OtherModel class."""
+        """Initialize the BaseModel instance."""
         if kwargs:
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
@@ -39,6 +39,6 @@ class BaseModel:
         """Convert the instance to a dictionary representation."""
         new_dict = self.__dict__.copy()
         new_dict['__class__'] = self.__class__.__name__
-        new_dict['created_at'] = self.__dict__['created_at'].isoformat()
-        new_dict['updated_at'] = self.__dict__['updated_at'].isoformat()
-        return (new_dict)
+        new_dict['created_at'] = self.created_at.isoformat()
+        new_dict['updated_at'] = self.updated_at.isoformat()
+        return new_dict
