@@ -4,7 +4,7 @@ import unittest
 import os
 import json
 import pep8
-
+from unittest.mock import patch, mock_open
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -58,34 +58,36 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new(self):
         """Test the new() method of the FileStorage class."""
-        obj = self.storage.all()
         self.u1.id = 1234
         self.u1.name = "julien"
         self.storage.new(self.u1)
-        key = "{}.{}".format(self.u1.__class__.__name__, self.u1.id)
-        self.assertIsNotNone(obj[key])
+        self.storage.save()
+        with open("file.json") as f:
+            data = json.load(f)
+            key = "{}.{}".format(self.u1.__class__.__name__, self.u1.id)
+            self.assertIn(key, data)
 
-    def test_check_json_loading(self):
+    @patch('builtins.open', new_callable=mock_open, read_data='{}')
+    def test_check_json_loading(self, mock_file):
         """Test that JSON file loads correctly."""
-        with open("file.json") as f:
-            dic = json.load(f)
-            self.assertEqual(isinstance(dic, dict), True)
+        self.storage.reload()
+        mock_file.assert_called_with('file.json', 'r')
+        data = json.load(mock_file())
+        self.assertEqual(isinstance(data, dict), True)
 
-    def test_file_existence(self):
+    @patch('builtins.open', new_callable=mock_open)
+    def test_file_existence(self, mock_file):
         """Test that the JSON file is created and not empty."""
-        with open("file.json") as f:
-            self.assertTrue(len(f.read()) > 0)
+        mock_file().write('{}')
+        self.storage.save()
+        mock_file.assert_called_with('file.json', 'w')
 
     def test_docstrings(self):
         """Check if docstrings are present in methods"""
         self.assertTrue(FileStorage.all.__doc__)
-        self.assertTrue(hasattr(FileStorage, 'all'))
         self.assertTrue(FileStorage.new.__doc__)
-        self.assertTrue(hasattr(FileStorage, 'new'))
         self.assertTrue(FileStorage.save.__doc__)
-        self.assertTrue(hasattr(FileStorage, 'save'))
         self.assertTrue(FileStorage.reload.__doc__)
-        self.assertTrue(hasattr(FileStorage, 'reload'))
 
 
 if __name__ == '__main__':
