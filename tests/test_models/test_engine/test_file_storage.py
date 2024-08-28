@@ -35,10 +35,9 @@ class TestFileStorage(unittest.TestCase):
         self.u1 = User()
         self.storage = FileStorage()
         self.storage.save()
-        if os.path.exists("file.json"):
-            pass
-        else:
-            os.mknod("file.json")
+        if not os.path.exists("file.json"):
+            with open("file.json", 'w') as f:
+                f.write('{}')
 
     def teardown(self):
 
