@@ -20,7 +20,10 @@ class FileStorage():
 
     def all(self):
         """Returns a dictionary of all objects in storage."""
-        return FileStorage.__objects
+        if cls is None:
+            return self.__objects
+        class_name = cls.__name__
+        return {k: v for k, v in self.__objects.items() if k.startswith(class_name)}
 
     def new(self, obj):
         """Adds a new object to storage."""
