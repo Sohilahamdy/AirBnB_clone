@@ -23,7 +23,3 @@ class TestConsole(unittest.TestCase):
         con.onecmd("EOF")
         # Ensure that sys.stdout was called with a newline character
         mock_stdout.write.assert_called_with('\n')
-
-
-if __name__ == '__main__':
-    unittest.main()
