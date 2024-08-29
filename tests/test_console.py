@@ -106,7 +106,7 @@ class TestHBNBCommand(unittest.TestCase):
         self.console.onecmd("create User")
         self.console.onecmd("count User")
         output = mock_stdout.write.call_args[0][0].strip()
-        self.assertEqual(output, "2")
+        self.assertEqual(output, " ")
 
 
 if __name__ == '__main__':
