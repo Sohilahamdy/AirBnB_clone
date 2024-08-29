@@ -74,7 +74,6 @@ class TestHBNBCommand(unittest.TestCase):
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
     def test_do_all(self, mock_stdout):
         """Test the 'all' command"""
-        con = self.create()
         con.onecmd("create User")
         con.onecmd("create Place")
         con.onecmd("all")
@@ -92,7 +91,7 @@ class TestHBNBCommand(unittest.TestCase):
         # Get the ID of the created instance
         instance_id = mock_stdout.write.call_args[0][0].strip()
         # Test the 'update' command
-        self.console.onecmd(f"update BaseModel {instance_id} name
+        self.console.onecmd(f"update BaseModel {instance_id} name "
                             "\"new_name\"")
         # Check if the instance is correctly updated
         self.console.onecmd(f"show BaseModel {instance_id}")

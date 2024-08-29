@@ -129,9 +129,9 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 4:
             print("** value missing **")
             return
-        class_name, instance_id, attribute_name, attribute_value
-        = (
-           args[0], args[1], args[2], args[3].strip('"'))
+        class_name, instance_id, attribute_name, attribute_value = (
+           args[0], args[1], args[2], args[3].strip('"')
+        )
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
