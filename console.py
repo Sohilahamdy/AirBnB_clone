@@ -145,35 +145,68 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         instance.save()
 
-    def do_count(self, line):
-        """Print the count of all class instances"""
+   # def do_count(self, line):
+    #    """Print the count of all class instances"""
+     #   if '.' in line:
+      #      parts = line.split('.')
+      #      class_name = parts[0]
+      #      method_name = parts[1]
+      #      if method_name != "count()":
+      #          print("*** Unknown syntax:", line)
+      #          return
+      #  else:
+      #      class_name = line.strip()
+
+       # if class_name not in HBNBCommand.classes:
+       #     print("** class doesn't exist **")
+       #     return
+
+        #count = 0
+        #all_objects = storage.all()
+        #print(f"All objects in storage: {all_objects}") 
+        #for obj in storage.all().values():
+        #    if obj.__class__.__name__ == class_name:
+        #       count += 1
+        #print(f"Count of {class_name}: {count}")
+        #print(count)
+
+    def default(self, line):
+        """Handle unrecognized commands"""
         if '.' in line:
             parts = line.split('.')
             class_name = parts[0]
-            method_name = parts[1]
-            if method_name != "count()":
-                print("*** Unknown syntax:", line)
-                return
-        else:
-            class_name = line.strip()
+            method_call = parts[1].strip('()')
 
+            if method_call == "all":
+                return self.do_all(class_name)
+            elif method_call == "count":
+                return self.do_count(class_name)
+            elif method_call.startswith("show"):
+                instance_id = method_call[5:-1].strip('"')
+                return self.do_show(f"{class_name} {instance_id}")
+            elif method_call.startswith("destroy"):
+                instance_id = method_call[8:-1].strip('"')
+                return self.do_destroy(f"{class_name} {instance_id}")
+            elif method_call.startswith("update"):
+                args = method_call[7:-1].split(', ')
+                instance_id = args[0].strip('"')
+                attribute_name = args[1].strip('"')
+                attribute_value = args[2].strip('"')
+                return self.do_update(f"{class_name} {instance_id} {attribute_name} {attribute_value}")
+        print("*** Unknown syntax:", line)
+
+    def do_count(self, line):
+        """Count the number of instances of a specific class"""
+        class_name = line.strip()
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        count = 0
-        all_objects = storage.all()
-        print(f"All objects in storage: {all_objects}") 
-        for obj in storage.all().values():
-            if obj.__class__.__name__ == class_name:
-                count += 1
-        print(f"Count of {class_name}: {count}")
-        print(count)
+    count = sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name)
+    print(count)
 
     def emptyline(self):
         """Do nothing on empty input line"""
         pass
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
