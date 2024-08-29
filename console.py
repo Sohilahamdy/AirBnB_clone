@@ -54,6 +54,8 @@ class HBNBCommand(cmd.Cmd):
         instance = cls()
         instance.save()
         print(instance.id)
+        print(f"Created instance of {class_name} with id {instance.id}")
+        print(storage.all())
 
     def do_show(self, line):
         """Show the string representation of an instance"""
@@ -160,9 +162,12 @@ class HBNBCommand(cmd.Cmd):
             return
 
         count = 0
+        all_objects = storage.all()
+        print(f"All objects in storage: {all_objects}") 
         for obj in storage.all().values():
             if obj.__class__.__name__ == class_name:
                 count += 1
+        print(f"Count of {class_name}: {count}")
         print(count)
 
     def emptyline(self):
