@@ -52,7 +52,7 @@ class TestHBNBCommand(unittest.TestCase):
         # Get the ID of the created instance
         instance_id = mock_stdout.write.call_args[0][0].strip()
         # Test the 'show' command
-        self.console.onecmd(f"show BaseModel {instance_id}")
+        self.console.onecmd("show BaseModel {}".format(instance_id))
         # Check if the instance is correctly shown
         output = mock_stdout.write.call_args[0][0].strip()
         self.assertIn(instance_id, output)
