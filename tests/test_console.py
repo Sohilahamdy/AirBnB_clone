@@ -40,7 +40,7 @@ class TestHBNBCommand(unittest.TestCase):
         """Test the 'create' command"""
         self.console.onecmd("create BaseModel")
         # Extract the ID from the printed output
-        output = mock_stdout.write.call_args[0][0].strip()
+        output = mock_stdout.getvalue().strip()
         self.assertTrue(output)  # Ensure output is not empty
         self.assertTrue(any(c.isdigit() for c in output))
 
@@ -50,11 +50,12 @@ class TestHBNBCommand(unittest.TestCase):
         # First create an instance to show
         self.console.onecmd("create BaseModel")
         # Get the ID of the created instance
-        instance_id = mock_stdout.write.call_args[0][0].strip()
+        instance_id = mock_stdout.getvalue().strip()
+        mock_stdout.reset_mock()  # Reset mock to capture next output
         # Test the 'show' command
-        self.console.onecmd("show BaseModel {}".format(instance_id))
+        self.console.onecmd(f"show BaseModel {instance_id}")
         # Check if the instance is correctly shown
-        output = mock_stdout.write.call_args[0][0].strip()
+        output = mock_stdout.getvalue().strip()
         self.assertIn(instance_id, output)
 
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
@@ -63,23 +64,23 @@ class TestHBNBCommand(unittest.TestCase):
         # First create an instance to destroy
         self.console.onecmd("create BaseModel")
         # Get the ID of the created instance
-        instance_id = mock_stdout.write.call_args[0][0].strip()
+        instance_id = mock_stdout.getvalue().strip()
+        mock_stdout.reset_mock()  # Reset mock to capture next output
         # Test the 'destroy' command
         self.console.onecmd(f"destroy BaseModel {instance_id}")
         # Ensure the instance was removed
         self.console.onecmd(f"show BaseModel {instance_id}")
-        output = mock_stdout.write.call_args[0][0].strip()
+        output = mock_stdout.getvalue().strip()
         self.assertEqual(output, "** no instance found **")
 
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
     def test_do_all(self, mock_stdout):
         """Test the 'all' command"""
-        con.onecmd("create User")
-        con.onecmd("create Place")
-        con.onecmd("all")
-
+        self.console.onecmd("create User")
+        self.console.onecmd("create Place")
+        self.console.onecmd("all")
         # Check that the output contains the instances
-        output = mock_stdout.write.call_args[0][0]
+        output = mock_stdout.getvalue()
         self.assertIn("User", output)
         self.assertIn("Place", output)
 
@@ -89,13 +90,13 @@ class TestHBNBCommand(unittest.TestCase):
         # First create an instance to update
         self.console.onecmd("create BaseModel")
         # Get the ID of the created instance
-        instance_id = mock_stdout.write.call_args[0][0].strip()
+        instance_id = mock_stdout.getvalue().strip()
+        mock_stdout.reset_mock()  # Reset mock to capture next output
         # Test the 'update' command
-        self.console.onecmd(f"update BaseModel {instance_id} name "
-                            "\"new_name\"")
+        self.console.onecmd(f"update BaseModel {instance_id} name \"new_name\"")
         # Check if the instance is correctly updated
         self.console.onecmd(f"show BaseModel {instance_id}")
-        output = mock_stdout.write.call_args[0][0].strip()
+        output = mock_stdout.getvalue().strip()
         self.assertIn("new_name", output)
 
     @mock.patch('sys.stdout', new_callable=mock.MagicMock)
@@ -105,7 +106,6 @@ class TestHBNBCommand(unittest.TestCase):
         self.console.onecmd("create User")
         self.console.onecmd("count User")
         output = mock_stdout.getvalue().strip()
-        print(f"Output from count command: '{output}'")
         self.assertEqual(output, "2")
 
 
